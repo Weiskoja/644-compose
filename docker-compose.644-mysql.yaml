@@ -1,0 +1,18 @@
+services:
+
+  db:
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+    volumes:
+      - .:/app/data
+      - ./aliases.sh:/etc/profile.d/aliases.sh
+      - ./sakila-db/sakila-schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
+      - ./sakila-db/sakila-data.sql:/docker-entrypoint-initdb.d/02-data.sql
+      - mysql_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    command: ["sh", "-c", "cat /etc/profile.d/aliases.sh >> /root/.bashrc && exec docker-entrypoint.sh mysqld"]
+volumes:
+  mysql_data:
