@@ -1,6 +1,8 @@
 services:
 
   db:
+    env_file:
+      - .env
     image: mysql
     restart: always
     environment:
@@ -13,6 +15,9 @@ services:
       - mysql_data:/var/lib/mysql
     ports:
       - "3306:3306"
-    command: ["sh", "-c", "cat /etc/profile.d/aliases.sh >> /root/.bashrc && exec docker-entrypoint.sh mysqld"]
+    command:
+      - sh
+      - -c
+      - "echo \"alias login='mysql --system-command=ON -u root --password=${ROOT_PASSWORD}'\" >> /root/.bashrc && exec docker-entrypoint.sh mysqld "
 volumes:
   mysql_data:
