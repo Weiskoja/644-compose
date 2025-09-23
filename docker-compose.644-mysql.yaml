@@ -3,7 +3,7 @@ services:
   db:
     env_file:
       - .env
-    image: mysql
+    image: mysql:8.4.2
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
@@ -17,6 +17,6 @@ services:
     command:
       - sh
       - -c
-      - "echo \"alias login='mysql --system-command=ON -u root --password=${MYSQL_ROOT_PASSWORD}'\" >> /root/.bashrc && exec docker-entrypoint.sh mysqld "
+      - "echo \"alias login='mysql --auto-rehash -u root --password=${MYSQL_ROOT_PASSWORD}'\" >> /root/.bashrc && exec docker-entrypoint.sh mysqld "
 volumes:
   mysql_data:
